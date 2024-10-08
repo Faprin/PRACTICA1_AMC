@@ -2,8 +2,17 @@ package App;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.File;
+import java.util.Random;
+import java.io.FileWriter;
 
 public class TrataFicheros {
+
+    /**
+     * Se encarga de leer un fichero que se le pasa por parametro y lo devuelve en forma de array de tipo Punto
+     * @param path -> Direccion donde se encuentra el fichero correspondiente
+     * @return -> Retorna los puntos del fichero en forma de array de Puntos
+     */
     public static Punto[] reader(String path) {
         Punto []puntos = null;
         try (FileReader r = new FileReader(path); // vamos a leer desde el sitio que nos manden
@@ -46,5 +55,39 @@ public class TrataFicheros {
         return puntos;
     }
 
-    
+    /**
+     * Crea ficheros tsp con el mismo formato y datos aleatorios
+     */
+    public static void creaFichero() {
+        try {
+            // definicion del nombre del archivo
+            Random numRandom = new Random(System.nanoTime());
+            int dimension = numRandom.nextInt(701);
+            String nomFichero = "dataset" + dimension + ".tsp";
+            File ficheroAleatorio = new File(nomFichero);
+
+
+            // creamos el fileWriter y metemos el nombre
+            FileWriter fichero = new FileWriter(nomFichero);
+            fichero.write("NAME: " + nomFichero + "\n");
+
+            // agrego el resto de cabeceras para que mantenga el mismo formato
+            fichero.write("TYPE: TSP \nCOMMENT: " + dimension +"\nDIMENSION: " + dimension + "\nEDGE_WEIGHT_TYPE: NAN\nNODE_COORD_SECTION\n");
+
+            // iremos escribiendo en el fichero los datos que generemos aleatoriamente
+            for(int i = 0; i < dimension; i++) {
+                double x = numRandom.nextDouble();
+                double y = numRandom.nextDouble();
+                fichero.write(i + 1 + " " + Math.round(x * 1e10)/1e10 + " " + Math.round(y * 1e10)/1e10 + "\n");
+            }
+
+            // indicamos el final del fichero
+            fichero.write("EOF");
+            fichero.close();
+            System.out.println("Fichero creado satisfactoriamente");
+
+        } catch (Exception e){
+            System.out.println("No se ha podido crear el nuevo fichero: " + e.getMessage());
+        }
+    }
 }

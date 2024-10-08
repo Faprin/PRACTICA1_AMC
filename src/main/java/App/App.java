@@ -6,7 +6,7 @@ public class App {
 
 
     public static void main(String[] args) {
-        Punto []puntos = TrataFicheros.reader("C:\\Users\\jmdom\\OneDrive - UNIVERSIDAD DE HUELVA\\Universidad\\3 AÑO\\ALGORITMICA Y MODELOS DE COMPUTACIÓN\\Prácticas\\PRACTICA1\\archivosTSP\\berlin52.tsp\\berlin52.tsp");
+        /*Punto []puntos = TrataFicheros.reader("C:\\Users\\jmdom\\OneDrive - UNIVERSIDAD DE HUELVA\\Universidad\\3 AÑO\\ALGORITMICA Y MODELOS DE COMPUTACIÓN\\Prácticas\\PRACTICA1\\archivosTSP\\berlin52.tsp\\berlin52.tsp");
 
         // visual del array normal
         Punto.mostrarArray(puntos);
@@ -18,6 +18,8 @@ public class App {
 
         System.out.println("....................PODA.........................");
         solu = Algoritmos.exhaustivoPoda(puntos, 0, puntos.length);
-        Punto.mostrarArray(solu);
+        Punto.mostrarArray(solu);*/
+
+        TrataFicheros.creaFichero();
     }
 }
