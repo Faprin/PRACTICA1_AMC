@@ -196,6 +196,55 @@ public class Algoritmos {
 
         return retorno;
     }
+    
+     public static Punto[] dyvMejorado(Punto [] t, int izq, int der) {
+        int nPuntos = der - izq +1;
+        Punto []retorno = new Punto[2];
+
+        if(nPuntos > 4) {
+            int pivote = izq + (der-izq) / 2;
+
+            // llamo recursivamente al método para que opere con los sub-arreglos
+             Punto []solIzq = dyv(t, izq, pivote);
+             Punto []solDer = dyv(t, pivote+1, der);
+
+             // calgulo la distancia mínima de las soluciones que tienen las divisiones
+             double disIzq = distancia(solIzq[0], solIzq[1]);
+             double disDer = distancia(solDer[0], solDer[1]);
+
+             // almaceno la solucion, teniendo asi la solucion entre las dos primeras franjas
+             double minDistance;
+             if (disIzq <= disDer) {
+                 minDistance = disIzq;
+                 retorno = solIzq;
+             } else {
+                 minDistance = disDer;
+                 retorno = solDer;
+             }
+
+
+            // busco los puntos más cercanos en la frontera
+            for(int i=pivote+1; i<=der-1; i++) { // derecha
+                if((t[i].getX() - t[pivote].getX()) > minDistance)
+                    break;
+            }
+
+            for(int i=pivote ; i>=0; i--) { // izquierda
+                if((t[i].getX() - t[pivote].getX()) > minDistance)
+                    break;
+            }
+
+            // copiar desde t[a+1, b-1] en un array auxiliar --> aux[0,b-1-(a+1)+1] --> [0, b-a-2]
+            // ordenar aux por el eje y
+            // comparamos cada punto con sus 11 puntos siguientes
+            
+       
+        } else {
+            retorno = exhaustivo(t,izq,der);
+        }
+
+        return retorno;
+    }
 
 
 }
