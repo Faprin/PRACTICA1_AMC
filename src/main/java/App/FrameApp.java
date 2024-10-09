@@ -8,12 +8,12 @@ package App;
  *
  * @author jmdom
  */
-public class InterfazGrafica extends java.awt.Frame {
+public class FrameApp extends java.awt.Frame {
 
     /**
      * Creates new form InterfazGrafica
      */
-    public InterfazGrafica() {
+    public FrameApp() {
         initComponents();
     }
 
@@ -47,7 +47,7 @@ public class InterfazGrafica extends java.awt.Frame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InterfazGrafica().setVisible(true);
+                new FrameApp().setVisible(true);
             }
         });
     }
