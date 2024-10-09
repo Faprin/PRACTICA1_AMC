@@ -42,7 +42,7 @@ public class TrataFicheros {
 
                 // creamos el punto y lo guardamos
                 puntos[j] = new Punto();
-                puntos[j].setId(j);
+                puntos[j].setId(Integer.parseInt(filtro[0]));
                 puntos[j].setX(Double.parseDouble(filtro[1]));
                 puntos[j].setY(Double.parseDouble(filtro[2]));
 

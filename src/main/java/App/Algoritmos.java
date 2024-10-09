@@ -22,13 +22,15 @@ public class Algoritmos {
         // calculo la distancia minima a comparar
         double minDistance = distancia(retorno[0], retorno[1]);
 
+        double distanciaActual = 0;
         for(int i=izq; i<der;i++){
             for(int j=i+1;j<der;j++){
-                // recorro todas las posiciones comparando si la distancia es menor
-                if(distancia(t[i],t[j])<minDistance){
+                // recorro todas las posiciones comparando si la distancia es menorç
+                distanciaActual = distancia(t[i],t[j]); // más eficiente
+                if(distanciaActual<minDistance){
                     retorno[0] = t[i];
                     retorno[1] = t[j];
-                    minDistance = distancia(t[i],t[j]);
+                    minDistance = distanciaActual;
                 }
             }
         }
@@ -46,6 +48,7 @@ public class Algoritmos {
         Punto []retorno = new Punto[2];
         retorno[0] = t[0];
         retorno[1] = t[1];
+        
         // distancia minima referente
         double minDistance = distancia(retorno[0], retorno[1]);
         for(int i=izq;i<der;i++){
