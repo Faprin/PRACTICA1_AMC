@@ -1,5 +1,7 @@
 package App;
 
+import java.util.ArrayList;
+
 public class Algoritmos {
 
     public static double distancia(Punto a, Punto b) {
@@ -197,8 +199,8 @@ public class Algoritmos {
                         break;
                     } else {
                         if (distancia(t[i], t[j]) < minDistance) {
-                            retorno[0] = t[0];
-                            retorno[1] = t[1];
+                            retorno[0] = t[i];
+                            retorno[1] = t[j];
                             minDistance = distancia(t[i], t[j]);
                         }
                     }
@@ -242,27 +244,23 @@ public class Algoritmos {
             }
 
             // creo un array para almacenar los puntos que estan detro de la franja
-            Punto []aux = null;
-            int nElementosAux = 0;
-            for(int i=izq;i<der;i++){
-                // aseguramos que se incluyan en la franja aquellos puntos suficneitemente cerca de la franja
-                if(Math.abs(t[i].getX() - t[pivote].getX()) < minDistance) {
-                    aux[nElementosAux] = t[i];
-                    nElementosAux++;
+            ArrayList<Punto> aux = new ArrayList<>(); 
+            for(int i = izq; i<der;i++){
+                if(Math.abs(t[i].getX() - t[pivote].getX() )< minDistance){
+                    aux.add(t[i]);
                 }
             }
             
-            // recorremos aux comparando sus Y´s
-            for(int i=0;i<aux.length;i++){
-                for(int j=i+1;j<aux.length && (aux[j].getY() - aux[i].getY()) < minDistance; j++){
-                    double dist = distancia(t[i], t[j]);
-                    if(dist<minDistance) {
+            // una vez tengo la franja, ahora opero comparo las y´s
+            for(int i=0;i<aux.size();i++){
+                for(int j=i+1;j<aux.size() && (aux.get(j).getY() - aux.get(i).getY()) < minDistance ;j++) {
+                    double dist = distancia(aux.get(i), aux.get(j));
+                    if(dist<minDistance){
                         minDistance = dist;
-                        retorno[0] = aux[i];
-                        retorno[1] = aux[j];
+                        retorno[0] = aux.get(i);
+                        retorno[1] = aux.get(j);
                     }
                 }
-                
             }
             
         } else {
