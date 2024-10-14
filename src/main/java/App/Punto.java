@@ -28,7 +28,7 @@ public class Punto {
 
     @Override
     public String toString(){
-        return new String("id: " + getId() + ", x: " + getX() + " y: " + getY());
+        return new String(this.id + "(" + this.getX() + ", " + this.getY() + ")");
     }
 
     public static void mostrarArray(Punto[] t) {

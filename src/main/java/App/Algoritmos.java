@@ -3,6 +3,10 @@ package App;
 import java.util.ArrayList;
 
 public class Algoritmos {
+    
+    private static int contador;
+    
+    public static int getContador() { return Algoritmos.contador; }
 
     public static double distancia(Punto a, Punto b) {
         return (Math.sqrt((b.getX() - a.getX()) * (b.getX() - a.getX()) + (b.getY() - a.getY()) * (b.getY() - a.getY())));
@@ -21,15 +25,18 @@ public class Algoritmos {
         // solucion para comparar
         retorno[0] = t[0];
         retorno[1] = t[1];
+        contador = 0;
 
         // calculo la distancia minima a comparar
         double minDistance = distancia(retorno[0], retorno[1]);
+        contador = contador+1;
 
         double distanciaActual = 0;
         for (int i = izq; i < der; i++) {
             for (int j = i + 1; j < der; j++) {
                 // recorro todas las posiciones comparando si la distancia es menorç
                 distanciaActual = distancia(t[i], t[j]); // más eficiente
+                contador++;
                 if (distanciaActual < minDistance) {
                     retorno[0] = t[i];
                     retorno[1] = t[j];
@@ -52,9 +59,12 @@ public class Algoritmos {
         Punto[] retorno = new Punto[2];
         retorno[0] = t[0];
         retorno[1] = t[1];
+        contador = 0;
 
         // distancia minima referente
         double minDistance = distancia(retorno[0], retorno[1]);
+        contador += 1;
+        
         for (int i = izq; i < der; i++) {
             for (int j = i + 1; j < der; j++) {
                 // hacemos la poda restando las x de los puntos entre ellas
@@ -62,6 +72,7 @@ public class Algoritmos {
                     break; // en caso de que sean mayores que la distancia mínima no interesa
                 } else {
                     if (distancia(t[i], t[j]) < minDistance) {
+                        contador++;
                         // si la distancia entre los puntos seleccionados es menor me interesa
                         retorno[0] = t[i];
                         retorno[1] = t[j];
@@ -154,6 +165,7 @@ public class Algoritmos {
     public static Punto[] dyv(Punto[] t, int izq, int der) {
         int nPuntos = der - izq + 1;
         Punto[] retorno = new Punto[2];
+        contador = 0;
 
         // ordenaremos el array para poder operar
         Algoritmos.quick_sort(t);
@@ -167,8 +179,10 @@ public class Algoritmos {
 
             // calgulo la distancia mínima de las soluciones que tienen las divisiones
             double disIzq = distancia(solIzq[0], solIzq[1]);
+            contador += 1;
             double disDer = distancia(solDer[0], solDer[1]);
-
+            contador += 1;
+            
             // almaceno la solucion, teniendo asi la solucion entre las dos primeras franjas
             double minDistance;
             if (disIzq <= disDer) {
@@ -199,6 +213,7 @@ public class Algoritmos {
                         break;
                     } else {
                         if (distancia(t[i], t[j]) < minDistance) {
+                            contador++;
                             retorno[0] = t[i];
                             retorno[1] = t[j];
                             minDistance = distancia(t[i], t[j]);
@@ -214,10 +229,10 @@ public class Algoritmos {
     }
     
     // ---- DIVIDE Y VENCERAS MEJORADO ---- 
-
     public static Punto[] dyvMejorado(Punto[] t, int izq, int der) {
         int nPuntos = der - izq + 1;
         Punto[] retorno = new Punto[2];
+        contador = 0;
 
         // ordenaremos el array para poder operar
         Algoritmos.quick_sort(t);
@@ -231,8 +246,10 @@ public class Algoritmos {
 
             // calgulo la distancia mínima de las soluciones que tienen las divisiones
             double disIzq = distancia(solIzq[0], solIzq[1]);
+            contador++;
             double disDer = distancia(solDer[0], solDer[1]);
-
+            contador++;
+            
             // almaceno la solucion, teniendo asi la solucion entre las dos primeras franjas
             double minDistance;
             if (disIzq <= disDer) {
@@ -255,6 +272,7 @@ public class Algoritmos {
             for(int i=0;i<aux.size();i++){
                 for(int j=i+1;j<aux.size() && (aux.get(j).getY() - aux.get(i).getY()) < minDistance ;j++) {
                     double dist = distancia(aux.get(i), aux.get(j));
+                    contador++;
                     if(dist<minDistance){
                         minDistance = dist;
                         retorno[0] = aux.get(i);

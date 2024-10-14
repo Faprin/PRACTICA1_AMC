@@ -47,7 +47,6 @@ public class TrataFicheros {
                 puntos[j].setY(Double.parseDouble(filtro[2]));
 
             }
-
         } catch (Exception e) {
             System.out.println("Error a la hora de leer el archivo con direccion: " + path + "Exception: " + e );
         }
@@ -58,11 +57,10 @@ public class TrataFicheros {
     /**
      * Crea ficheros tsp con el mismo formato y datos aleatorios
      */
-    public static void creaFichero() {
+    public static void creaFichero(int dimension) {
         try {
             // definicion del nombre del archivo
             Random numRandom = new Random(System.nanoTime());
-            int dimension = numRandom.nextInt(701);
             String nomFichero = "dataset" + dimension + ".tsp";
             File ficheroAleatorio = new File(nomFichero);
 
