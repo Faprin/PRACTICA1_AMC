@@ -88,4 +88,22 @@ public class TrataFicheros {
             System.out.println("No se ha podido crear el nuevo fichero: " + e.getMessage());
         }
     }
+    
+    public static void generaFicherosPorArray(Punto []t, String algoritmo) {
+        try {
+            String nomFichero = algoritmo + ".tsp";
+            File ficheroGenerado = new File(nomFichero);
+            FileWriter fichero = new FileWriter(ficheroGenerado);
+            
+            for(int i=0;i<t.length;i++) {
+                fichero.write(i + " " + t[i].getX() + ", " + t[i].getY() + "\n");
+            }
+            
+            fichero.write("EOF");
+            fichero.close();
+            
+        } catch (Exception e) {
+            System.out.println("No se ha podido generar el fichero a partir del array: " + e.getMessage());
+        }
+    }
 }

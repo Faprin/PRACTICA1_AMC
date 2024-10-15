@@ -74,18 +74,20 @@ public class App {
                         Punto[] memoria = TrataFicheros.reader(path);
 
                         System.out.println("Estrategia                Punto 1                           Punto 2                           Distancia       Calculadas       Tiempo (mseg)");
-                        System.out.println("===============================================================================================================");
+                        System.out.println("=============================================================================================================================================");
 
                         // Exhaustivo
                         startTime = System.currentTimeMillis();
                         Punto[] exhaustivo = Algoritmos.exhaustivo(memoria, 0, memoria.length);
                         endTime = System.currentTimeMillis();
-                        duration = endTime - startTime;
+                        duration = (endTime - startTime);
 
-                        System.out.printf("Exhaustivo               %-35s %-35s %-15f %-15d %-15d%n",
+                        System.out.printf("Exhaustivo               %-35s %-35s %-15.8f %-15d %-15d%n",
                                 exhaustivo[0], exhaustivo[1],
                                 Algoritmos.distancia(exhaustivo[0], exhaustivo[1]),
                                 Algoritmos.getContador(), duration);
+
+                        TrataFicheros.generaFicherosPorArray(exhaustivo, "Exhaustivo");
 
                         // Exhaustivo con Poda
                         startTime = System.currentTimeMillis();
@@ -93,10 +95,12 @@ public class App {
                         endTime = System.currentTimeMillis();
                         duration = endTime - startTime;
 
-                        System.out.printf("Exhaustivo Poda          %-35s %-35s %-15f %-15d %-15d%n",
+                        System.out.printf("Exhaustivo Poda          %-35s %-35s %-15.8f %-15d %-15d%n",
                                 exhaustivoPoda[0], exhaustivoPoda[1],
                                 Algoritmos.distancia(exhaustivoPoda[0], exhaustivoPoda[1]),
                                 Algoritmos.getContador(), duration);
+
+                        TrataFicheros.generaFicherosPorArray(exhaustivoPoda, "Exhaustivo-Poda");
 
                         // Divide y Vencerás
                         startTime = System.currentTimeMillis();
@@ -104,10 +108,12 @@ public class App {
                         endTime = System.currentTimeMillis();
                         duration = endTime - startTime;
 
-                        System.out.printf("DyV                     %-35s %-35s %-15f %-15d %-15d%n",
+                        System.out.printf("DyV                     %-35s %-35s %-15.8f %-15d %-15d%n",
                                 divideYVenceras[0], divideYVenceras[1],
                                 Algoritmos.distancia(divideYVenceras[0], divideYVenceras[1]),
                                 Algoritmos.getContador(), duration);
+
+                        TrataFicheros.generaFicherosPorArray(divideYVenceras, "Divide-Y-Venceras");
 
                         // Divide y Vencerás Mejorado
                         startTime = System.currentTimeMillis();
@@ -115,14 +121,20 @@ public class App {
                         endTime = System.currentTimeMillis();
                         duration = endTime - startTime;
 
-                        System.out.printf("DyV Mejorado             %-35s %-35s %-15f %-15d %-15d%n",
+                        System.out.printf("DyV Mejorado             %-35s %-35s %-15.8f %-15d %-15d%n",
                                 divideYVencerasMejorado[0], divideYVencerasMejorado[1],
                                 Algoritmos.distancia(divideYVencerasMejorado[0], divideYVencerasMejorado[1]),
                                 Algoritmos.getContador(), duration);
 
+                        TrataFicheros.generaFicherosPorArray(divideYVencerasMejorado, "Divide-Y-Venceras-Mejorado");
+
                     } else {
                         System.out.println("No se ha cargado ningun dataset previamente en memoria");
                     }
+                }
+
+                case 4 -> {
+
                 }
 
             }
