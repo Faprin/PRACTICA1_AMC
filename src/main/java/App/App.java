@@ -15,7 +15,7 @@ public class App {
         System.out.print(">>  ");
 
     }
-
+    
     public static void main(String[] args) {
         // crear un dataset aleatorio -> pregunta por la capacidad  y lo guarda
         // Cargar un dataset en memoria
@@ -43,11 +43,12 @@ public class App {
                 }
 
                 case 2 -> {
-                    // carga un dataset en memoria
-                    System.out.print("Indica la ruta del fichero: ");
+                    // pido la talla
                     in.nextLine();
-                    path = in.nextLine();
-                    System.out.println(path);
+                    System.out.print("Dimension: ");
+                    int dimension = in.nextInt();
+                    TrataFicheros.creaFichero(dimension);
+                    Punto []memoria = TrataFicheros.reader("./berlin52");
                 }
 
                 case 3 -> {
