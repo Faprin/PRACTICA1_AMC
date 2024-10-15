@@ -74,8 +74,8 @@ public class TrataFicheros {
 
             // iremos escribiendo en el fichero los datos que generemos aleatoriamente
             for(int i = 0; i < dimension; i++) {
-                double x = numRandom.nextDouble();
-                double y = numRandom.nextDouble();
+                double x = numRandom.nextDouble(500-0+1);
+                double y = numRandom.nextDouble(500-0+1);
                 fichero.write(i + 1 + " " + Math.round(x * 1e10)/1e10 + " " + Math.round(y * 1e10)/1e10 + "\n");
             }
 
