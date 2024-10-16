@@ -77,6 +77,7 @@ public class App {
                         System.out.println("=============================================================================================================================================");
 
                         // Exhaustivo
+                        Punto []ordenacion = memoria;
                         startTime = System.currentTimeMillis();
                         Punto[] exhaustivo = Algoritmos.exhaustivo(memoria, 0, memoria.length);
                         endTime = System.currentTimeMillis();
@@ -87,9 +88,10 @@ public class App {
                                 Algoritmos.distancia(exhaustivo[0], exhaustivo[1]),
                                 Algoritmos.getContador(), duration);
 
-                        TrataFicheros.generaFicherosPorArray(exhaustivo, "Exhaustivo");
+                        TrataFicheros.generaFicherosPorArray(ordenacion, "Exhaustivo");
 
                         // Exhaustivo con Poda
+                        ordenacion = memoria;
                         startTime = System.currentTimeMillis();
                         Punto[] exhaustivoPoda = Algoritmos.exhaustivoPoda(memoria, 0, memoria.length);
                         endTime = System.currentTimeMillis();
@@ -100,9 +102,10 @@ public class App {
                                 Algoritmos.distancia(exhaustivoPoda[0], exhaustivoPoda[1]),
                                 Algoritmos.getContador(), duration);
 
-                        TrataFicheros.generaFicherosPorArray(exhaustivoPoda, "Exhaustivo-Poda");
+                        TrataFicheros.generaFicherosPorArray(ordenacion, "Exhaustivo-Poda");
 
                         // Divide y Vencerás
+                        ordenacion = memoria;
                         startTime = System.currentTimeMillis();
                         Punto[] divideYVenceras = Algoritmos.dyv(memoria, 0, memoria.length);
                         endTime = System.currentTimeMillis();
@@ -113,9 +116,10 @@ public class App {
                                 Algoritmos.distancia(divideYVenceras[0], divideYVenceras[1]),
                                 Algoritmos.getContador(), duration);
 
-                        TrataFicheros.generaFicherosPorArray(divideYVenceras, "Divide-Y-Venceras");
+                        TrataFicheros.generaFicherosPorArray(ordenacion, "Divide-Y-Venceras");
 
                         // Divide y Vencerás Mejorado
+                        ordenacion = memoria;
                         startTime = System.currentTimeMillis();
                         Punto[] divideYVencerasMejorado = Algoritmos.dyvMejorado(memoria, 0, memoria.length);
                         endTime = System.currentTimeMillis();
@@ -126,7 +130,7 @@ public class App {
                                 Algoritmos.distancia(divideYVencerasMejorado[0], divideYVencerasMejorado[1]),
                                 Algoritmos.getContador(), duration);
 
-                        TrataFicheros.generaFicherosPorArray(divideYVencerasMejorado, "Divide-Y-Venceras-Mejorado");
+                        TrataFicheros.generaFicherosPorArray(ordenacion, "Divide-Y-Venceras-Mejorado");
 
                     } else {
                         System.out.println("No se ha cargado ningun dataset previamente en memoria");
