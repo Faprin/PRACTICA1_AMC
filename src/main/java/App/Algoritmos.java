@@ -59,7 +59,6 @@ public class Algoritmos {
      */
     public static Punto[] exhaustivoPoda(Punto[] t, int izq, int der) {
         Punto[] retorno = new Punto[2];
-        quick_sort(t);
         retorno[0] = t[0];
         retorno[1] = t[1];
         contador = 0;
@@ -170,9 +169,6 @@ public class Algoritmos {
         Punto[] retorno = new Punto[2];
         contador = 0;
 
-        // ordenaremos el array para poder operar
-        Algoritmos.quick_sort(t);
-
         if (nPuntos > 4) {
             int pivote = izq + (der - izq) / 2;
 
@@ -237,8 +233,6 @@ public class Algoritmos {
         Punto[] retorno = new Punto[2];
         contador = 0;
 
-        // ordenaremos el array para poder operar
-        Algoritmos.quick_sort(t);
 
         if (nPuntos > 4) {
             int pivote = izq + (der - izq) / 2;

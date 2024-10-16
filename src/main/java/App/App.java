@@ -77,7 +77,7 @@ public class App {
                         System.out.println("=============================================================================================================================================");
 
                         // Exhaustivo
-                        Punto []ordenacion = memoria;
+                        Punto[] ordenacion = memoria;
                         startTime = System.currentTimeMillis();
                         Punto[] exhaustivo = Algoritmos.exhaustivo(memoria, 0, memoria.length);
                         endTime = System.currentTimeMillis();
@@ -92,6 +92,7 @@ public class App {
 
                         // Exhaustivo con Poda
                         ordenacion = memoria;
+                        Algoritmos.quick_sort(ordenacion);
                         startTime = System.currentTimeMillis();
                         Punto[] exhaustivoPoda = Algoritmos.exhaustivoPoda(memoria, 0, memoria.length);
                         endTime = System.currentTimeMillis();
@@ -106,6 +107,8 @@ public class App {
 
                         // Divide y Vencerás
                         ordenacion = memoria;
+                        // ordeno el array porque voy a aplicar dyv 
+                        Algoritmos.quick_sort(ordenacion);
                         startTime = System.currentTimeMillis();
                         Punto[] divideYVenceras = Algoritmos.dyv(memoria, 0, memoria.length);
                         endTime = System.currentTimeMillis();
@@ -120,6 +123,7 @@ public class App {
 
                         // Divide y Vencerás Mejorado
                         ordenacion = memoria;
+                        Algoritmos.quick_sort(ordenacion);
                         startTime = System.currentTimeMillis();
                         Punto[] divideYVencerasMejorado = Algoritmos.dyvMejorado(memoria, 0, memoria.length);
                         endTime = System.currentTimeMillis();
