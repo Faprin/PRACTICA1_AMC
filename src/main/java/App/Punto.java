@@ -30,10 +30,4 @@ public class Punto {
     public String toString(){
         return new String(this.id + "(" + this.getX() + ", " + this.getY() + ")");
     }
-
-    public static void mostrarArray(Punto[] t) {
-        for(int i = 0;i<t.length;i++){
-            System.out.println(t[i]);
-        }
-    }
 }

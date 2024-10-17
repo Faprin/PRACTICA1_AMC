@@ -106,4 +106,6 @@ public class TrataFicheros {
             System.out.println("No se ha podido generar el fichero a partir del array: " + e.getMessage());
         }
     }
+    
+    // generar los ficheros por tiempo -> nombreDelAlgoritmo.dat -> para el case 4
 }

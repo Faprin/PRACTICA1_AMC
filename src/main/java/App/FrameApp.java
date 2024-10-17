@@ -4,11 +4,17 @@
  */
 package App;
 
+import static App.App.menu;
+import java.awt.Color;
+import java.util.Scanner;
+
 /**
  *
  * @author jmdom
  */
 public class FrameApp extends java.awt.Frame {
+
+    private int eleccion=0;
 
     /**
      * Creates new form InterfazGrafica
@@ -25,11 +31,43 @@ public class FrameApp extends java.awt.Frame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
             }
         });
+        setLayout(null);
+
+        jLabel1.setFont(new java.awt.Font("Dubai", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("PRACTICA 1 AMC");
+        add(jLabel1);
+        jLabel1.setBounds(70, 50, 150, 60);
+
+        jButton1.setFont(new java.awt.Font("Dubai", 1, 14)); // NOI18N
+        jButton1.setText("2. Cargar dataset en memoria");
+        jButton1.setActionCommand("2. Cargar dataset en memoria");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        add(jButton1);
+        jButton1.setBounds(170, 230, 230, 30);
+
+        jButton2.setFont(new java.awt.Font("Dubai", 1, 14)); // NOI18N
+        jButton2.setText("1. Crear fichero aleatorio");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        add(jButton2);
+        jButton2.setBounds(170, 180, 230, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -41,17 +79,138 @@ public class FrameApp extends java.awt.Frame {
         System.exit(0);
     }//GEN-LAST:event_exitForm
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.eleccion=1;
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrameApp().setVisible(true);
+        FrameApp frame = new FrameApp();
+        Scanner in = new Scanner(System.in);
+        String path = "";
+
+        // configuracion del frame
+        int width = 1200, height = 400;
+        frame.setSize(width, height);
+        frame.setLocation(200, 200);
+        frame.setTitle(" --- PRACTICA 1 ---- ");
+        frame.setBackground(Color.decode("#222222"));
+
+        frame.setVisible(true);
+
+        do {
+            menu();
+            frame.eleccion = in.nextInt();
+
+            switch (frame.eleccion) {
+                case 1 -> {
+                    // crear un dataset aleatorio
+                    System.out.print("Indica la capacidad del dataset aleatorio: ");
+                    int capacidad = in.nextInt();
+                    TrataFicheros.creaFichero(capacidad);
+                }
+
+                case 2 -> {
+                    // carga un dataset en memoria
+                    System.out.print("Indica la ruta del fichero: ");
+                    in.nextLine();
+                    path = in.nextLine();
+                    System.out.println(path);
+                }
+
+                case 3 -> {
+                    // comrpbar estrategias con el dataset cargado en memoria
+                    if (!path.equals("")) {
+                        long startTime = 0, endTime = 0, duration = 0;
+                        Punto[] memoria = TrataFicheros.reader(path);
+
+                        System.out.println("Estrategia                Punto 1                           Punto 2                           Distancia       Calculadas       Tiempo (mseg)");
+                        System.out.println("=============================================================================================================================================");
+
+                        // Exhaustivo
+                        Punto[] ordenacion = memoria;
+                        startTime = System.currentTimeMillis();
+                        Punto[] exhaustivo = Algoritmos.exhaustivo(memoria, 0, memoria.length);
+                        endTime = System.currentTimeMillis();
+                        duration = (endTime - startTime);
+
+                        System.out.printf("Exhaustivo               %-35s %-35s %-15.8f %-15d %-15d%n",
+                                exhaustivo[0], exhaustivo[1],
+                                Algoritmos.distancia(exhaustivo[0], exhaustivo[1]),
+                                Algoritmos.getContador(), duration);
+
+                        TrataFicheros.generaFicherosPorArray(ordenacion, "Exhaustivo");
+
+                        // Exhaustivo con Poda
+                        ordenacion = memoria;
+                        Algoritmos.quick_sort(ordenacion);
+                        startTime = System.currentTimeMillis();
+                        Punto[] exhaustivoPoda = Algoritmos.exhaustivoPoda(memoria, 0, memoria.length);
+                        endTime = System.currentTimeMillis();
+                        duration = endTime - startTime;
+
+                        System.out.printf("Exhaustivo Poda          %-35s %-35s %-15.8f %-15d %-15d%n",
+                                exhaustivoPoda[0], exhaustivoPoda[1],
+                                Algoritmos.distancia(exhaustivoPoda[0], exhaustivoPoda[1]),
+                                Algoritmos.getContador(), duration);
+
+                        TrataFicheros.generaFicherosPorArray(ordenacion, "Exhaustivo-Poda");
+
+                        // Divide y Vencerás
+                        ordenacion = memoria;
+                        // ordeno el array porque voy a aplicar dyv 
+                        Algoritmos.quick_sort(ordenacion);
+                        startTime = System.currentTimeMillis();
+                        Punto[] divideYVenceras = Algoritmos.dyv(memoria, 0, memoria.length);
+                        endTime = System.currentTimeMillis();
+                        duration = endTime - startTime;
+
+                        System.out.printf("DyV                     %-35s %-35s %-15.8f %-15d %-15d%n",
+                                divideYVenceras[0], divideYVenceras[1],
+                                Algoritmos.distancia(divideYVenceras[0], divideYVenceras[1]),
+                                Algoritmos.getContador(), duration);
+
+                        TrataFicheros.generaFicherosPorArray(ordenacion, "Divide-Y-Venceras");
+
+                        // Divide y Vencerás Mejorado
+                        ordenacion = memoria;
+                        Algoritmos.quick_sort(ordenacion);
+                        startTime = System.currentTimeMillis();
+                        Punto[] divideYVencerasMejorado = Algoritmos.dyvMejorado(memoria, 0, memoria.length);
+                        endTime = System.currentTimeMillis();
+                        duration = endTime - startTime;
+
+                        System.out.printf("DyV Mejorado             %-35s %-35s %-15.8f %-15d %-15d%n",
+                                divideYVencerasMejorado[0], divideYVencerasMejorado[1],
+                                Algoritmos.distancia(divideYVencerasMejorado[0], divideYVencerasMejorado[1]),
+                                Algoritmos.getContador(), duration);
+
+                        TrataFicheros.generaFicherosPorArray(ordenacion, "Divide-Y-Venceras-Mejorado");
+
+                    } else {
+                        System.out.println("No se ha cargado ningun dataset previamente en memoria");
+                    }
+                }
+
+                case 4 -> {
+
+                }
+
             }
-        });
+        } while (frame.eleccion != 9);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
