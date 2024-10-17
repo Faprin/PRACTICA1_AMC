@@ -108,4 +108,25 @@ public class TrataFicheros {
     }
     
     // generar los ficheros por tiempo -> nombreDelAlgoritmo.dat -> para el case 4
+    public static void generaFicheroTiempos(double []tiempos, String algoritmo) {
+        try {
+            String nomFichero = algoritmo + ".dat";
+            File ficheroGenerado = new File(nomFichero); 
+            FileWriter fichero = new FileWriter(ficheroGenerado);
+            int iter=0;
+            
+            fichero.write(algoritmo);
+            System.out.println("buenos dias");
+            fichero.write("Talla            Tiempo");
+            for(int i=1000;i<=10000;i++) {
+                fichero.write(" " + i + "           " + tiempos[iter] + "\n");
+                iter++;
+            }
+            
+            
+            fichero.close();
+        } catch (Exception ex) {
+            System.out.println("No se ha podido generar el fichero de tiempos: " + ex.getMessage());
+        }
+    }
 }
