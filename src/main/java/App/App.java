@@ -35,7 +35,17 @@ public class App {
         return data;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static Punto[] copiaArray(Punto[] original) {
+        Punto[] copia = new Punto[original.length];
+
+        for (int i = 0; i < original.length; i++) {
+            copia[i] = new Punto(original[i].getX(), original[i].getY(), original[i].getId());
+        }
+
+        return copia;
+    }
+
+    public static void main(String[] args) {
         // crear un dataset aleatorio -> pregunta por la capacidad  y lo guarda
         // Cargar un dataset en memoria
         // Comprobar estrategias -> Comprueba las estrategias con el dataset cargado en memoria con el formato de la pagina 10
@@ -43,7 +53,6 @@ public class App {
         int eleccion = 0;
         Scanner in = new Scanner(System.in);
         String path = "";
-        long startTime = 0, endTime = 0, duration = 0;
 
         // limpiamos consola
         for (int i = 0; i < 50; i++) {
@@ -73,12 +82,14 @@ public class App {
                 case 3 -> {
                     // comrpbar estrategias con el dataset cargado en memoria
                     if (!path.equals("")) {
+                        long startTime = 0, endTime = 0, duration = 0;
                         Punto[] memoria = TrataFicheros.reader(path);
 
                         System.out.println("Estrategia                Punto 1                           Punto 2                           Distancia       Calculadas       Tiempo (mseg)");
                         System.out.println("=============================================================================================================================================");
 
                         // Exhaustivo
+                        Algoritmos.resetContador();
                         Punto[] ordenacion = memoria;
                         startTime = System.currentTimeMillis();
                         Punto[] exhaustivo = Algoritmos.exhaustivo(memoria, 0, memoria.length);
@@ -93,6 +104,7 @@ public class App {
                         TrataFicheros.generaFicherosPorArray(ordenacion, "Exhaustivo");
 
                         // Exhaustivo con Poda
+                        Algoritmos.resetContador();
                         ordenacion = memoria;
                         Algoritmos.quick_sort(ordenacion);
                         startTime = System.currentTimeMillis();
@@ -108,6 +120,7 @@ public class App {
                         TrataFicheros.generaFicherosPorArray(ordenacion, "Exhaustivo-Poda");
 
                         // Divide y Vencerás
+                        Algoritmos.resetContador();
                         ordenacion = memoria;
                         // ordeno el array porque voy a aplicar dyv 
                         Algoritmos.quick_sort(ordenacion);
@@ -124,6 +137,7 @@ public class App {
                         TrataFicheros.generaFicherosPorArray(ordenacion, "Divide-Y-Venceras");
 
                         // Divide y Vencerás Mejorado
+                        Algoritmos.resetContador();
                         ordenacion = memoria;
                         Algoritmos.quick_sort(ordenacion);
                         startTime = System.currentTimeMillis();
@@ -144,71 +158,71 @@ public class App {
                 }
 
                 case 4 -> {
-                    // debemos generar 10 datasets distintos con un incremento fijo ex de 500 en 500
-                    // en este caso la talla base quiero que sea 100
-                    double tiempoE[] = new double[10], tiempoEP[] = new double[10], tiempoDyV[] = new double[10], tiempoDyVM[] = new double[10];
-                    Punto[] dataset;
+                    double tiempoExhaustivo[] = new double[5],
+                            tiempoExhaustivoPoda[] = new double[5],
+                            tiempoDyV[] = new double[5],
+                            tiempoDyVMejorado[] = new double[5];
+
                     int iter = 0;
 
-                    for (int i = 1000; i <= 10000; i += 1000) {
-                        dataset = generaDatasetsPorTalla(i);
+                    System.out.println("");
+                    System.out.println(String.format("%-8s%-15s%-20s%-20s%-30s", "TALLA", "EXHAUSTIVO", "EXHAUSTIVO-PODA", "DIVIDE Y VENCERAS", "DIVIDE Y VENCERAS MEJORADO"));
+                    for (int i = 1000; i <= 5000; i += 1000) {
+                        // para cada tamaño son 10 datasets distintos
+                        for (int j = 0; j < 10; j++) {
+                            // opero con algoritmos y para saber el timpo medio de cada talla divido entre 10
+                            Punto[] dataset = generaDatasetsPorTalla(i);
+                            Punto[] cambia = copiaArray(dataset);
+                            double startTime, endTime, duration;
+                            // exhaustivo
+                            Algoritmos.resetContador();
+                            startTime = System.currentTimeMillis();
+                            Algoritmos.exhaustivo(cambia, 0, cambia.length);
+                            endTime = System.currentTimeMillis();
+                            tiempoExhaustivo[iter] += (endTime - startTime);
 
-                        for (int j = 0; j < 2; j++) {
-                            System.out.println("");
+                            // exhaustivoPoda
+                            Algoritmos.resetContador();
+                            cambia = copiaArray(dataset);
+                            startTime = System.currentTimeMillis();
+                            Algoritmos.exhaustivoPoda(cambia, 0, cambia.length);
+                            endTime = System.currentTimeMillis();
+                            tiempoExhaustivoPoda[iter] += (endTime - startTime);
+
+                            // Divide y Vencerás
+                            Algoritmos.resetContador();
+                            cambia = copiaArray(dataset);
+                            startTime = System.currentTimeMillis();
+                            Algoritmos.dyv(cambia, 0, cambia.length);
+                            endTime = System.currentTimeMillis();
+                            tiempoDyV[iter] += (endTime - startTime);
+
+                            // Divide y Vencerás Mejorado
+                            Algoritmos.resetContador();
+                            cambia = copiaArray(dataset);
+                            startTime = System.currentTimeMillis();
+                            Algoritmos.dyvMejorado(cambia, 0, cambia.length);
+                            endTime = System.currentTimeMillis();
+                            tiempoDyVMejorado[iter] += (endTime - startTime);
 
                         }
 
-                        System.out.println("Talla: " + i + "    Exhaustivo " + " Exhaustivo poda " + " Divide y Venceras " + " Divide y Venceras Mejorado");
-                        System.out.println("=========================================================================================================");
-
-                        // exhaustivo
-                        startTime = System.currentTimeMillis();
-                        Algoritmos.exhaustivo(dataset, 0, dataset.length);
-                        endTime = System.currentTimeMillis();
-                        duration = endTime - startTime;
-                        tiempoE[iter] = duration;
-
-                        System.out.print("          " + duration);
-
-                        // exhaustivo poda
-                        Punto[] ord = dataset;
-                        startTime = System.currentTimeMillis();
-                        Algoritmos.quick_sort(ord);
-                        Algoritmos.exhaustivoPoda(dataset, 0, dataset.length);
-                        endTime = System.currentTimeMillis();
-                        duration = endTime - startTime;
-                        tiempoEP[iter] = duration;
-                        System.out.print("          " + duration);
-
-                        // divide y vanceras
-                        ord = dataset;
-                        startTime = System.currentTimeMillis();
-                        Algoritmos.quick_sort(ord);
-                        Algoritmos.dyv(dataset, 0, dataset.length);
-                        endTime = System.currentTimeMillis();
-                        duration = endTime - startTime;
-                        tiempoDyV[iter] = duration;
-                        System.out.print("          " + duration);
-
-                        // divide y venceras mejorado
-                        ord = dataset;
-                        startTime = System.currentTimeMillis();
-                        Algoritmos.quick_sort(ord);
-                        Algoritmos.dyvMejorado(dataset, 0, dataset.length);
-                        endTime = System.currentTimeMillis();
-                        duration = endTime - startTime;
-                        tiempoDyVM[iter] = duration;
-
-                        System.out.print("          " + duration);
-
+                        System.out.println(String.format("%-8d%-15.4f%-20.4f%-20.4f%-30.4f",
+                                i,
+                                tiempoExhaustivo[iter] / 10,
+                                tiempoExhaustivoPoda[iter] / 10,
+                                tiempoDyV[iter] / 10,
+                                tiempoDyVMejorado[iter] / 10));
                         iter++;
                     }
-                    
-                    // generamos los ficheros con los tiempo
-                    TrataFicheros.generaFicheroTiempos(tiempoE, "Exhaustivo");
-                    TrataFicheros.generaFicheroTiempos(tiempoEP, "Exhaustivo-Poda");
-                    TrataFicheros.generaFicheroTiempos(tiempoDyV, "Divide-y-Venceras");
-                    TrataFicheros.generaFicheroTiempos(tiempoE, "Divide-y-Venceras-Mejorado");
+
+                    // creamos los ficheros
+                    System.out.println("");
+                    TrataFicheros.generaFicheroDeTiempos(tiempoExhaustivo, "Exhaustivo");
+                    TrataFicheros.generaFicheroDeTiempos(tiempoExhaustivoPoda, "Exhaustivo-Poda");
+                    TrataFicheros.generaFicheroDeTiempos(tiempoDyV, "Divide-Y-Venceras");
+                    TrataFicheros.generaFicheroDeTiempos(tiempoDyVMejorado, "Divide-Y-Venceras-Mejorado");
+                    System.out.println("");
                 }
 
             }

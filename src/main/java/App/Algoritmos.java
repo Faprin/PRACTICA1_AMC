@@ -27,8 +27,7 @@ public class Algoritmos {
         // solucion para comparar
         retorno[0] = t[0];
         retorno[1] = t[1];
-        contador = 0;
-
+        
         // calculo la distancia minima a comparar
         double minDistance = distancia(retorno[0], retorno[1]);
         contador = contador + 1;
@@ -61,7 +60,6 @@ public class Algoritmos {
         Punto[] retorno = new Punto[2];
         retorno[0] = t[0];
         retorno[1] = t[1];
-        contador = 0;
 
         // distancia minima referente
         double minDistance = distancia(retorno[0], retorno[1]);
@@ -167,7 +165,6 @@ public class Algoritmos {
     public static Punto[] dyv(Punto[] t, int izq, int der) {
         int nPuntos = der - izq + 1;
         Punto[] retorno = new Punto[2];
-        contador = 0;
 
         if (nPuntos > 4) {
             int pivote = izq + (der - izq) / 2;
@@ -234,12 +231,12 @@ public class Algoritmos {
         contador = 0;
 
 
-        if (nPuntos > 4) {
+        if (nPuntos > 2) {
             int pivote = izq + (der - izq) / 2;
 
             // llamo recursivamente al método para que opere con los sub-arreglos
-            Punto[] solIzq = dyv(t, izq, pivote);
-            Punto[] solDer = dyv(t, pivote + 1, der);
+            Punto[] solIzq = dyvMejorado(t, izq, pivote);
+            Punto[] solDer = dyvMejorado(t, pivote + 1, der);
 
             // calgulo la distancia mínima de las soluciones que tienen las divisiones
             double disIzq = distancia(solIzq[0], solIzq[1]);
@@ -264,6 +261,8 @@ public class Algoritmos {
                     aux.add(t[i]);
                 }
             }
+            
+            // tengo que ordenar el vector auxiliar 
 
             // una vez tengo la franja, ahora opero comparo las y´s
             for (int i = 0; i < aux.size(); i++) {
@@ -283,6 +282,10 @@ public class Algoritmos {
         }
 
         return retorno;
+    }
+    
+    public static void resetContador() {
+        contador= 0;
     }
 
 }

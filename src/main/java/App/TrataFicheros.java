@@ -9,36 +9,40 @@ import java.io.FileWriter;
 public class TrataFicheros {
 
     /**
-     * Se encarga de leer un fichero que se le pasa por parametro y lo devuelve en forma de array de tipo Punto
+     * Se encarga de leer un fichero que se le pasa por parametro y lo devuelve
+     * en forma de array de tipo Punto
+     *
      * @param path -> Direccion donde se encuentra el fichero correspondiente
      * @return -> Retorna los puntos del fichero en forma de array de Puntos
      */
     public static Punto[] reader(String path) {
-        Punto []puntos = null;
+        Punto[] puntos = null;
         try (FileReader r = new FileReader(path); // vamos a leer desde el sitio que nos manden
-             BufferedReader b = new BufferedReader(r)) {
+                 BufferedReader b = new BufferedReader(r)) {
 
             // me salto las 3 primeras líneas
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++) {
                 b.readLine();
+            }
 
             // leo la dimension para saber cuantos elementos tengo que recorrer
             String stringDimension = b.readLine();
 
             // tratamos la linea lída para quedarnos con el numero nada mas
-            String []parts = stringDimension.split(": ");
+            String[] parts = stringDimension.split(": ");
             int dimension = Integer.parseInt(parts[1]);
 
             // saltamos las dos siguientes líneas
-            for(int i=0;i<2;i++)
+            for (int i = 0; i < 2; i++) {
                 b.readLine();
+            }
 
             // creo un array para cargar los puntos
             puntos = new Punto[dimension];
             for (int j = 0; j < dimension; j++) {
                 String lineaPura = b.readLine();
                 // tratamos la linea
-                String []filtro = lineaPura.split(" ");
+                String[] filtro = lineaPura.split(" ");
 
                 // creamos el punto y lo guardamos
                 puntos[j] = new Punto();
@@ -48,7 +52,7 @@ public class TrataFicheros {
 
             }
         } catch (Exception e) {
-            System.out.println("Error a la hora de leer el archivo con direccion: " + path + "Exception: " + e );
+            System.out.println("Error a la hora de leer el archivo con direccion: " + path + "Exception: " + e);
         }
 
         return puntos;
@@ -64,19 +68,18 @@ public class TrataFicheros {
             String nomFichero = "dataset" + dimension + ".tsp";
             File ficheroAleatorio = new File(nomFichero);
 
-
             // creamos el fileWriter y metemos el nombre
             FileWriter fichero = new FileWriter(nomFichero);
             fichero.write("NAME: " + nomFichero + "\n");
 
             // agrego el resto de cabeceras para que mantenga el mismo formato
-            fichero.write("TYPE: TSP \nCOMMENT: " + dimension +"\nDIMENSION: " + dimension + "\nEDGE_WEIGHT_TYPE: NAN\nNODE_COORD_SECTION\n");
+            fichero.write("TYPE: TSP \nCOMMENT: " + dimension + "\nDIMENSION: " + dimension + "\nEDGE_WEIGHT_TYPE: NAN\nNODE_COORD_SECTION\n");
 
             // iremos escribiendo en el fichero los datos que generemos aleatoriamente
-            for(int i = 0; i < dimension; i++) {
-                double x = numRandom.nextDouble(500-0+1);
-                double y = numRandom.nextDouble(500-0+1);
-                fichero.write(i + 1 + " " + Math.round(x * 1e10)/1e10 + " " + Math.round(y * 1e10)/1e10 + "\n");
+            for (int i = 0; i < dimension; i++) {
+                double x = numRandom.nextDouble(500 - 0 + 1);
+                double y = numRandom.nextDouble(500 - 0 + 1);
+                fichero.write(i + 1 + " " + Math.round(x * 1e10) / 1e10 + " " + Math.round(y * 1e10) / 1e10 + "\n");
             }
 
             // indicamos el final del fichero
@@ -84,49 +87,51 @@ public class TrataFicheros {
             fichero.close();
             System.out.println("Fichero creado satisfactoriamente");
 
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("No se ha podido crear el nuevo fichero: " + e.getMessage());
         }
     }
-    
-    public static void generaFicherosPorArray(Punto []t, String algoritmo) {
+
+    public static void generaFicherosPorArray(Punto[] t, String algoritmo) {
         try {
             String nomFichero = algoritmo + ".tsp";
             File ficheroGenerado = new File(nomFichero);
             FileWriter fichero = new FileWriter(ficheroGenerado);
-            
-            for(int i=0;i<t.length;i++) {
+
+            for (int i = 0; i < t.length; i++) {
                 fichero.write(i + " " + t[i].getX() + ", " + t[i].getY() + "\n");
             }
-            
+
             fichero.write("EOF");
             fichero.close();
-            
+
         } catch (Exception e) {
             System.out.println("No se ha podido generar el fichero a partir del array: " + e.getMessage());
         }
     }
-    
-    // generar los ficheros por tiempo -> nombreDelAlgoritmo.dat -> para el case 4
-    public static void generaFicheroTiempos(double []tiempos, String algoritmo) {
+
+    public static void generaFicheroDeTiempos(double[] tiempos, String algoritmo) {
+        String nomFichero = algoritmo + ".dat";
+
         try {
-            String nomFichero = algoritmo + ".dat";
-            File ficheroGenerado = new File(nomFichero); 
+            File ficheroGenerado = new File(nomFichero);
             FileWriter fichero = new FileWriter(ficheroGenerado);
-            int iter=0;
-            
-            fichero.write(algoritmo);
-            System.out.println("buenos dias");
-            fichero.write("Talla            Tiempo");
-            for(int i=1000;i<=10000;i++) {
-                fichero.write(" " + i + "           " + tiempos[iter] + "\n");
-                iter++;
+            int talla = 0;
+
+            fichero.write(algoritmo + "\n");
+            for (int i = 0; i < tiempos.length; i++) {
+                // escribo cada tiempo dividido dentre los tiempos que sean dentro del array
+                talla+=1000;
+                fichero.write(talla + "     " + tiempos[i] / 10 + "\n");
             }
-            
-            
+
             fichero.close();
+            System.out.println("Fichero " + algoritmo + ".dat generado correctamente");
+
         } catch (Exception ex) {
-            System.out.println("No se ha podido generar el fichero de tiempos: " + ex.getMessage());
+            System.out.println("No se ha podido crear el fichero: " + ex.getMessage());
         }
     }
 }
+
+
